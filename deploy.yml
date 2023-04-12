@@ -5,6 +5,24 @@
   remote_user: ec2-user
 
   tasks:
-  - name: fetch new version
-    ansible.builtin.debug:
-      msg: "Hello world from mindmaps server"
+  - ansible.builtin.systemd:
+    state: stopped
+    name: mindmaps
+
+  - ansible.builtin.file:
+    state: absent
+    path: /mindmaps/app
+  
+  - ansible.builtin.git:
+    repo: https://github.com/ansible/ansible-examples.git
+    dest: /mindmaps/app
+    single_branch: yes
+    version: master
+  
+  - ansible.builtin.shell:
+    cmd: npm install
+    chdir: /mindmaps/app
+  
+  - ansible.builtin.systemd:
+    state: started
+    name: mindmaps
