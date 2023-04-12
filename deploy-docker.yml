@@ -7,6 +7,6 @@
   tasks:
     - name: Create temp directory 
       ansible.builtin.file:
-        state: present
+        state: directory
         path: /tmp/hostadmin/temp/
     
