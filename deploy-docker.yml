@@ -1,9 +1,8 @@
 ---
 
 - name: Deploy new mindmaps version
-  hosts: localhost
+  hosts: 127.0.0.1
   remote_user: hostadmin
-  connection: local
 
   tasks:
     - name: Check user
