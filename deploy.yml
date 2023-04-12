@@ -2,7 +2,7 @@
 
 - name: Deploy new mindmaps version
   hosts: mindmaps
-  remote_user: ec2_user
+  remote_user: ec2-user
 
   tasks:
   - name: fetch new version
