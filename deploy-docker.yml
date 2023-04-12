@@ -1,0 +1,9 @@
+---
+
+- name: Deploy new mindmaps version
+  hosts: localhost
+
+  tasks:
+    - name: Ping
+      debug:
+        msg: "Hello!"
