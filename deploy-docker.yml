@@ -10,4 +10,8 @@
         msg: "{{ ansible_user_id }}"
     - name: Check docker version
       ansible.builtin.shell:
-        cmd: docker ps
+        cmd: docker version
+      register: docker_ver
+    - name: Check version
+      debug:
+        msg: "{{ docker_ver }}"
