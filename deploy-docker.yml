@@ -29,7 +29,7 @@
 
     - name: Build binary
       ansible.builtin.shell:
-        cmd: "docker build . -t 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:{{ dockertag.stdout }} -t 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:latest"
+        cmd: "docker build . -t 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:{{ dockertag.stdout }} -t mindmaps:latest"
         chdir: /tmp/hostadmin/temp/mindmaps
     
     - name: Push to ECR
