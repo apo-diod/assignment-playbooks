@@ -9,4 +9,24 @@
       ansible.builtin.file:
         state: directory
         path: /tmp/hostadmin/temp/
+
+    - name: Clone new version
+      ansible.builtin.git:
+        repo: https://github.com/apo-diod/mindmaps
+        dest: /tmp/hostadmin/temp/mindmaps
+    
+    - name: Generate UTC string for tagging
+      ansible.builtin.shell:
+        cmd: "date +%s"
+      register: dockertag
+
+    - name: Build binary
+      ansible.builtin.shell:
+        cmd: "docker build . -t mindmaps:{{ dockertag }}"
+        chdir: /tmp/hostadmin/temp/mindmaps
+    
+    - name: Clean up directory
+      ansible.builtin.file:
+        state: absent
+        path: /tmp/hostadmin/temp/
     
