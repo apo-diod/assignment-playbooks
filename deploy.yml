@@ -20,8 +20,6 @@
     ansible.builtin.git:
       repo: https://github.com/ansible/ansible-examples.git
       dest: /mindmaps/app
-      single_branch: yes
-      version: master
   
   - name: Install dependencies
     ansible.builtin.shell:
