@@ -1,7 +1,7 @@
 ---
 
 - name: Deploy new mindmaps version
-  hosts: 167.86.117.56
+  hosts: loc
   remote_user: hostadmin
 
   tasks:
