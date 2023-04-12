@@ -18,7 +18,7 @@
   
   - name: Clone new version
     ansible.builtin.git:
-      repo: https://github.com/ansible/ansible-examples.git
+      repo: https://github.com/apo-diod/mindmaps
       dest: /mindmaps/app
   
   - name: Install dependencies
