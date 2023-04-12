@@ -20,11 +20,22 @@
         cmd: "date +%s"
       register: dockertag
 
+    - name: Login to ECR
+      ansible.builtin.shell:
+        cmd: "aws ecr get-login-password --region region | docker login --username AWS --password-stdin aws_account_id.dkr.ecr.region.amazonaws.com"
+      environment:
+        AWS_ACCESS_KEY_ID: "{{ lookup('env','aws_key') }}"
+        AWS_SECRET_ACCESS_KEY: "{{ lookup('env','aws_secret') }}"
+
     - name: Build binary
       ansible.builtin.shell:
-        cmd: "docker build . -t mindmaps:{{ dockertag.stdout }}"
+        cmd: "docker build . -t 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:{{ dockertag.stdout }} -t 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:latest"
         chdir: /tmp/hostadmin/temp/mindmaps
     
+    - name: Push to ECR
+      ansible.builtin.shell:
+        cmd: "docker push 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:{{ dockertag.stdout }}"
+
     - name: Clean up directory
       ansible.builtin.file:
         state: absent
