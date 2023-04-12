@@ -36,6 +36,10 @@
       ansible.builtin.shell:
         cmd: "docker push 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:{{ dockertag.stdout }}"
 
+    - name: Push to ECR
+      ansible.builtin.shell:
+        cmd: "docker push 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:latest"
+
     - name: Clean up directory
       ansible.builtin.file:
         state: absent
