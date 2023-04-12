@@ -5,13 +5,8 @@
   remote_user: hostadmin
 
   tasks:
-    - name: Check user
-      debug:
-        msg: "{{ ansible_user_id }}"
-    - name: Check docker version
-      ansible.builtin.shell:
-        cmd: docker version
-      register: docker_ver
-    - name: Check version
-      debug:
-        msg: "{{ docker_ver }}"
+    - name: Create temp directory 
+      ansible.builtin.file:
+        state: present
+        path: /tmp/hostadmin/temp/
+    
