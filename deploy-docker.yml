@@ -4,6 +4,6 @@
   hosts: localhost
 
   tasks:
-    - name: Ping
-      debug:
-        msg: "Hello!"
+    - name: Check docker version
+      ansible.builtin.shell:
+        cmd: docker version
