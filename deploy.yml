@@ -14,8 +14,9 @@
   
   - name: Create fallback copy
     ansible.builtin.copy:
-      remote_src: /mindmaps/app
+      src: /mindmaps/app
       dest: /mindmaps/app-old
+      remote_src: true
 
   - name: Delete old version
     ansible.builtin.file:
