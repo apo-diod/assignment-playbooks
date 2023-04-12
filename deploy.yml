@@ -5,24 +5,29 @@
   remote_user: ec2-user
 
   tasks:
-  - ansible.builtin.systemd:
-    state: stopped
-    name: mindmaps
+  - name: Stop running mindmaps 
+    ansible.builtin.systemd:
+      state: stopped
+      name: mindmaps
 
-  - ansible.builtin.file:
-    state: absent
-    path: /mindmaps/app
+  - name: Delete old version
+    ansible.builtin.file:
+      state: absent
+      path: /mindmaps/app
   
-  - ansible.builtin.git:
-    repo: https://github.com/ansible/ansible-examples.git
-    dest: /mindmaps/app
-    single_branch: yes
-    version: master
+  - name: Clone new version
+    ansible.builtin.git:
+      repo: https://github.com/ansible/ansible-examples.git
+      dest: /mindmaps/app
+      single_branch: yes
+      version: master
   
-  - ansible.builtin.shell:
-    cmd: npm install
-    chdir: /mindmaps/app
+  - name: Install dependencies
+    ansible.builtin.shell:
+      cmd: npm install
+      chdir: /mindmaps/app
   
-  - ansible.builtin.systemd:
-    state: started
-    name: mindmaps
+  - name: Start mindmaps
+    ansible.builtin.systemd:
+      state: started
+      name: mindmaps
