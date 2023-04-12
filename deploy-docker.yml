@@ -22,7 +22,7 @@
 
     - name: Login to ECR
       ansible.builtin.shell:
-        cmd: "aws ecr get-login-password --region region | docker login --username AWS --password-stdin aws_account_id.dkr.ecr.region.amazonaws.com"
+        cmd: "docker login -u AWS -p $(aws ecr get-login-password --region eu-central-1) 250724264539.dkr.ecr.eu-central-1.amazonaws.com"
       environment:
         AWS_ACCESS_KEY_ID: "{{ lookup('env','aws_key') }}"
         AWS_SECRET_ACCESS_KEY: "{{ lookup('env','aws_secret') }}"
