@@ -36,7 +36,7 @@
       ansible.builtin.shell:
         cmd: "docker push 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:{{ dockertag.stdout }}"
 
-    - name: Push to ECR
+    - name: Push to ECR as latest
       ansible.builtin.shell:
         cmd: "docker push 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:latest"
 
