@@ -9,6 +9,7 @@
     ansible.builtin.systemd:
       state: stopped
       name: mindmaps
+    become: true
 
   - name: Delete old version
     ansible.builtin.file:
@@ -31,3 +32,4 @@
     ansible.builtin.systemd:
       state: started
       name: mindmaps
+    become: true
