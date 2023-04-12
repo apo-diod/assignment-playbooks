@@ -1,0 +1,10 @@
+---
+
+- name: Deploy new mindmaps version
+  hosts: mindmaps
+  remote_user: ec2_user
+
+  tasks:
+  - name: fetch new version
+    ansible.builtin.debug:
+      msg: "Hello world from mindmaps server"
