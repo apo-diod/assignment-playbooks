@@ -41,3 +41,7 @@
     - name: Rename new container
       ansible.builtin.shell:
         cmd: "docker rename mindmaps_latest mindmaps"
+    
+    - name: Remove old images
+      ansible.builtin.shell:
+        cmd: "docker image prune -af"

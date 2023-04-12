@@ -1,0 +1,27 @@
+---
+
+- name: Fallback to previous version
+  hosts: mindmaps-docker
+  remote_user: ec2-user
+
+  tasks:
+  
+  - name: Check for running mindmaps_latest container
+    ansible.builtin.shell:
+      cmd: "docker ps --filter name=mindmaps_latest | wc -l"
+    register: mindmaps_latest
+  
+  - name: Fallback to stable (stop mindmaps_latest)
+    ansible.builtin.shell:
+      cmd: "docker rm -f mindmaps_latest"
+    when: mindmaps_latest.stdout | int > 1
+  
+  - name: Fallback to stable (start mindmaps)
+    ansible.builtin.shell:
+      cmd: "docker start mindmaps"
+    when: mindmaps_latest.stdout | int > 1
+  
+  - name: Fallback to stable (prune unused images)
+    ansible.builtin.shell:
+      cmd: "docker image prune -af"
+    
