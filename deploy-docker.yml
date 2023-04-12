@@ -2,6 +2,7 @@
 
 - name: Deploy new mindmaps version
   hosts: localhost
+  remote_user: hostadmin
 
   tasks:
     - name: Check docker version
