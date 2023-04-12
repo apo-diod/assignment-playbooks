@@ -1,0 +1,28 @@
+---
+
+- name: Fallback to previous version
+  hosts: mindmaps
+  remote_user: ec2-user
+
+  tasks:
+
+  - name: Stop running mindmaps 
+    ansible.builtin.systemd:
+      state: stopped
+      name: mindmaps
+    become: true
+  - name: Check if fallback exists
+    ansible.builtin.stat:
+      path: /mindmaps/app-old
+    register: fallback
+  
+  - name: Fallback
+    ansible.builtin.shell:
+      cmd: mv /mindmaps/app-old /mindmaps/app
+    when: fallback.stat.exists
+  
+  - name: Start mindmaps
+    ansible.builtin.systemd:
+      state: started
+      name: mindmaps
+    become: true

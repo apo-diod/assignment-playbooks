@@ -5,11 +5,17 @@
   remote_user: ec2-user
 
   tasks:
+
   - name: Stop running mindmaps 
     ansible.builtin.systemd:
       state: stopped
       name: mindmaps
     become: true
+  
+  - name: Create fallback copy
+    ansible.builtin.copy:
+      src: /mindmaps/app
+      dest: /mindmaps/app-old
 
   - name: Delete old version
     ansible.builtin.file:
