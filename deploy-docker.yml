@@ -6,6 +6,9 @@
   connection: local
 
   tasks:
+    - name: Check user
+      debug:
+        msg: {{ ansible_user_id }}
     - name: Check docker version
       ansible.builtin.shell:
         cmd: docker version
