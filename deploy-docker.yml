@@ -22,7 +22,7 @@
 
     - name: Build binary
       ansible.builtin.shell:
-        cmd: "docker build . -t mindmaps:{{ dockertag }}"
+        cmd: "docker build . -t mindmaps:{{ dockertag.stdout }}"
         chdir: /tmp/hostadmin/temp/mindmaps
     
     - name: Clean up directory
