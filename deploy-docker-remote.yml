@@ -1,0 +1,43 @@
+---
+
+- name: Deploy new mindmaps version
+  hosts: mindmaps-docker
+  remote_user: ec2-user
+
+  tasks:
+
+    - name: Login to ECR
+      ansible.builtin.shell:
+        cmd: "docker login -u AWS -p $(aws ecr get-login-password --region eu-central-1) 250724264539.dkr.ecr.eu-central-1.amazonaws.com"
+      environment:
+        AWS_ACCESS_KEY_ID: "{{ lookup('env','aws_key') }}"
+        AWS_SECRET_ACCESS_KEY: "{{ lookup('env','aws_secret') }}"
+
+    - name: Pull image
+      ansible.builtin.shell:
+        cmd: "docker pull 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:latest"
+    
+    - name: Stop previous container
+      ansible.builtin.shell:
+        cmd: "docker stop mindmaps"
+    
+    - name: Run new container
+      ansible.builtin.shell:
+        cmd: "docker run -p 3000:3000 -d --name mindmaps_latest 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:latest"
+    
+    - name: Wait for container to init
+      ansible.builtin.uri:
+        url: "http://52.28.5.113:3000"
+        method: GET
+      register: result
+      until: result.status == 200
+      retries: 20
+      delay: 30
+    
+    - name: Remove old container
+      ansible.builtin.shell:
+        cmd: "docker rm mindmaps"
+    
+    - name: Rename new container
+      ansible.builtin.shell:
+        cmd: "docker rename mindmaps_latest mindmaps"
