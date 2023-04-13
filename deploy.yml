@@ -66,11 +66,9 @@
       cmd: npm install && npm run build
       chdir: /mindmaps/build
   
-  - name: Copy new app
-    ansible.builtin.copy:
-      src: /mindmaps/build/dist
-      dest: /usr/share/nginx/html
-      remote_src: true
+  - name: Deploy new app
+    ansible.builtin.shell:
+      cmd: "mv /mindmaps/build/dist /usr/share/nginx/html"
     become: true
   
   - name: Start nginx
