@@ -27,7 +27,7 @@
     
     - name: Wait for container to init
       ansible.builtin.uri:
-        url: "http://52.28.5.113/"
+        url: "http://52.28.5.113:8080"
         method: GET
       register: result
       until: result.status == 200
