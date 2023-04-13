@@ -21,6 +21,7 @@
       ansible.builtin.shell:
         cmd: "docker stop mindmaps"
     
+    # It is running as mindmaps_latest for a reason. If container fails to init - fallback job will delete mindmaps_latest and start mindmaps container
     - name: Run new container
       ansible.builtin.shell:
         cmd: "docker run -p 8080:80 -d --name mindmaps_latest 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:latest"

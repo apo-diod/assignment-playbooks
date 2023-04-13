@@ -21,6 +21,7 @@
       name: nginx
     become: true
 
+  # Check if mime.types cache entry already exists on this host 
   - name: Check nginx config
     ansible.builtin.shell:
       cmd: "cat /etc/nginx/mime.types | grep cache-manifest | wc -l"
@@ -32,7 +33,7 @@
     become: true
     when: nginx_config_presence.stdout | int == 0
 
-  - name: Directory exists
+  - name: Ensure backup directory exists
     ansible.builtin.file:
       state: directory
       path: /mindmaps/app-old
