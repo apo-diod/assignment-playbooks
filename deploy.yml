@@ -30,7 +30,7 @@
     ansible.builtin.shell:
       cmd: "sed -i '$d' /etc/nginx/mime.types && printf \"\ttext/cache-manifest\tappcache;\n}\" >> /etc/nginx/mime.types"
     become: true
-    when: mindmaps_latest.stdout | int == 0
+    when: nginx_config_presence.stdout | int == 0
 
   - name: Directory exists
     ansible.builtin.file:
