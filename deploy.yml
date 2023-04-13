@@ -74,13 +74,13 @@
     become: true
   
   - name: Test app
-      ansible.builtin.uri:
-        url: "http://3.127.214.12/"
-        method: GET
-      register: result
-      until: result.status == 200
-      retries: 20
-      delay: 30
+    ansible.builtin.uri:
+      url: "http://3.127.214.12/"
+      method: GET
+    register: result
+    until: result.status == 200
+    retries: 20
+    delay: 30
   
   - name: Delete old and build files
     ansible.builtin.shell:
