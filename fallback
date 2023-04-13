@@ -6,11 +6,12 @@
 
   tasks:
 
-  - name: Stop running mindmaps 
+  - name: Stop running nginx 
     ansible.builtin.systemd:
       state: stopped
-      name: mindmaps
+      name: nginx
     become: true
+  
   - name: Check if fallback exists
     ansible.builtin.stat:
       path: /mindmaps/app-old
@@ -18,11 +19,12 @@
   
   - name: Fallback
     ansible.builtin.shell:
-      cmd: mv /mindmaps/app-old /mindmaps/app
+      cmd: mv /mindmaps/app-old /usr/share/nginx/html
     when: fallback.stat.exists
+    become: true
   
-  - name: Start mindmaps
+  - name: Start nginx
     ansible.builtin.systemd:
       state: started
-      name: mindmaps
+      name: nginx
     become: true

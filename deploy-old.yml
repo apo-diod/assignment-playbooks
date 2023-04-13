@@ -1,0 +1,40 @@
+---
+
+- name: Deploy new mindmaps version
+  hosts: mindmaps
+  remote_user: ec2-user
+
+  tasks:
+
+  - name: Stop running mindmaps 
+    ansible.builtin.systemd:
+      state: stopped
+      name: mindmaps
+    become: true
+  
+  - name: Create fallback copy
+    ansible.builtin.copy:
+      src: /mindmaps/app
+      dest: /mindmaps/app-old
+      remote_src: true
+
+  - name: Delete old version
+    ansible.builtin.file:
+      state: absent
+      path: /mindmaps/app
+  
+  - name: Clone new version
+    ansible.builtin.git:
+      repo: https://github.com/apo-diod/mindmaps
+      dest: /mindmaps/app
+  
+  - name: Install dependencies
+    ansible.builtin.shell:
+      cmd: npm install
+      chdir: /mindmaps/app
+  
+  - name: Start mindmaps
+    ansible.builtin.systemd:
+      state: started
+      name: mindmaps
+    become: true
