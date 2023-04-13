@@ -37,6 +37,12 @@
       state: directory
       path: /mindmaps/app-old
   
+  - name: Ensure nginx html directory exists
+    ansible.builtin.file:
+      state: directory
+      path: /usr/share/nginx/html
+    become: true
+  
   - name: Create fallback copy
     ansible.builtin.copy:
       src: /usr/share/nginx/html
@@ -62,7 +68,7 @@
   
   - name: Copy new app
     ansible.builtin.copy:
-      src: /mindmaps/app/dist
+      src: /mindmaps/build/dist
       dest: /usr/share/nginx/html
       remote_src: true
     become: true
