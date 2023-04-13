@@ -23,11 +23,11 @@
     
     - name: Run new container
       ansible.builtin.shell:
-        cmd: "docker run -p 3000:3000 -d --name mindmaps_latest 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:latest"
+        cmd: "docker run -p 80:80 -d --name mindmaps_latest 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:latest"
     
     - name: Wait for container to init
       ansible.builtin.uri:
-        url: "http://52.28.5.113:3000"
+        url: "http://52.28.5.113/"
         method: GET
       register: result
       until: result.status == 200
