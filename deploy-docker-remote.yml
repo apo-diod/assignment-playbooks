@@ -3,19 +3,21 @@
 - name: Deploy new mindmaps version
   hosts: mindmaps-docker
   remote_user: ec2-user
+  vars:
+    - remote_repo: "250724264539.dkr.ecr.eu-central-1.amazonaws.com"
 
   tasks:
 
     - name: Login to ECR
       ansible.builtin.shell:
-        cmd: "docker login -u AWS -p $(aws ecr get-login-password --region eu-central-1) 250724264539.dkr.ecr.eu-central-1.amazonaws.com"
+        cmd: "docker login -u AWS -p $(aws ecr get-login-password --region eu-central-1) {{ remote_repo }}"
       environment:
         AWS_ACCESS_KEY_ID: "{{ lookup('env','aws_key') }}"
         AWS_SECRET_ACCESS_KEY: "{{ lookup('env','aws_secret') }}"
 
     - name: Pull image
       ansible.builtin.shell:
-        cmd: "docker pull 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:latest"
+        cmd: "docker pull {{ remote_repo }}/mindmaps:latest"
     
     - name: Stop previous container
       ansible.builtin.shell:
@@ -24,7 +26,7 @@
     # It is running as mindmaps_latest for a reason. If container fails to init - fallback job will delete mindmaps_latest and start mindmaps container
     - name: Run new container
       ansible.builtin.shell:
-        cmd: "docker run -p 8080:80 -d --name mindmaps_latest 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:latest"
+        cmd: "docker run -p 8080:80 -d --name mindmaps_latest {{ remote_repo }}/mindmaps:latest"
     
     - name: Wait for container to init
       ansible.builtin.uri:

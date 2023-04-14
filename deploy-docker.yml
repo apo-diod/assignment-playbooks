@@ -3,6 +3,8 @@
 - name: Deploy new mindmaps version
   hosts: loc
   remote_user: hostadmin
+  vars:
+    - remote_repo: "250724264539.dkr.ecr.eu-central-1.amazonaws.com"
 
   tasks:
     - name: Create temp directory 
@@ -22,23 +24,23 @@
 
     - name: Login to ECR
       ansible.builtin.shell:
-        cmd: "docker login -u AWS -p $(aws ecr get-login-password --region eu-central-1) 250724264539.dkr.ecr.eu-central-1.amazonaws.com"
+        cmd: "docker login -u AWS -p $(aws ecr get-login-password --region eu-central-1) {{ remote_repo }}"
       environment:
         AWS_ACCESS_KEY_ID: "{{ lookup('env','aws_key') }}"
         AWS_SECRET_ACCESS_KEY: "{{ lookup('env','aws_secret') }}"
 
     - name: Build binary
       ansible.builtin.shell:
-        cmd: "docker build . -t 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:{{ dockertag.stdout }} -t 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:latest"
+        cmd: "docker build . -t {{ remote_repo }}/mindmaps:{{ dockertag.stdout }} -t {{ remote_repo }}/mindmaps:latest"
         chdir: /tmp/hostadmin/temp/mindmaps
     
     - name: Push to ECR
       ansible.builtin.shell:
-        cmd: "docker push 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:{{ dockertag.stdout }}"
+        cmd: "docker push {{ remote_repo }}/mindmaps:{{ dockertag.stdout }}"
 
     - name: Push to ECR as latest
       ansible.builtin.shell:
-        cmd: "docker push 250724264539.dkr.ecr.eu-central-1.amazonaws.com/mindmaps:latest"
+        cmd: "docker push {{ remote_repo }}/mindmaps:latest"
 
     - name: Clean up directory
       ansible.builtin.file:
